@@ -1,0 +1,85 @@
+.book-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+.book-section:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.book-section h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.book-section details {
+  margin-top: 10px;
+}
+.book-section details summary {
+  font-weight: 600;
+  color: #495057;
+  cursor: pointer;
+  padding: 8px 0;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 10px;
+}
+.book-section details summary:hover {
+  color: #007bff;
+}
+.book-section details p {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  color: #6c757d;
+}
+.book-section details p strong {
+  color: #495057;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 30px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  padding: 30px 20px;
+}
+
+@media (max-width: 768px) {
+  .book-section {
+    padding: 15px;
+  }
+  .book-section h2 {
+    font-size: 1.3rem;
+  }
+}
+table {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  border-collapse: collapse;
+  width: auto;
+}
+
+td {
+  border: 1px solid #bdbdbd;
+  padding: 8px 14px;
+  text-align: center;
+  background: #fff;
+  font-weight: 500;
+  color: #333;
+}
+
+p {
+  margin-top: 0.5em;
+}
+
+p:has(strong) {
+  color: #007bff;
+  font-weight: 600;
+}

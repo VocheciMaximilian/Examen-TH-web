@@ -12,13 +12,25 @@
         
         <!-- 1B - Rezolvarea cerinței -->
         <% carti.forEach(function(carte) { %>
-            <section>
+            <section class="book-section">
                 <h2><%= carte.titlu %></h2>
                 <details open>
                     <summary>observatii</summary>
                     <p><%= carte.nume_autor %>, <%= carte.an_publicare %></p>
                     <p><%= carte.tema %></p>
                 </details>
+                <!-- 1C - Tabel scoruri -->
+                <% if (carte.scoruri && carte.scoruri.length > 0) { %>
+                    <table border="1">
+                        <tr>
+                            <% carte.scoruri.forEach(function(scor) { %>
+                                <td><%= scor %></td>
+                            <% }); %>
+                        </tr>
+                    </table>
+                    <p>Scor minim: <%= Math.min(...carte.scoruri) %>, Scor maxim: <%= Math.max(...carte.scoruri) %></p>
+                <% } %>
+                <!-- 1D - Filtrarea se face in backend, vezi index.js -->
             </section>
         <% }); %>
     </div>

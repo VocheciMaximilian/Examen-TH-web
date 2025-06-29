@@ -1,6 +1,8 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
+const sass = require('sass'); // Pentru compilare SCSS -> CSS
+const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
@@ -30,6 +32,22 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
+// Functie pentru compilare automata SCSS -> CSS
+function compileScss() {
+    const scssPath = path.join(__dirname, 'resurse', 'stiluri', 'style.scss');
+    const cssPath = path.join(__dirname, 'resurse', 'stiluri', 'style.css');
+    try {
+        const result = sass.compile(scssPath);
+        fs.writeFileSync(cssPath, result.css);
+        console.log('SCSS compilat cu succes!');
+    } catch (err) {
+        console.error('Eroare la compilarea SCSS:', err);
+    }
+}
+
+// Compileaza SCSS la pornirea serverului
+compileScss();
+
 // Routes
 app.get('/', async (req, res) => {
     try {
@@ -44,12 +62,27 @@ app.get('/', async (req, res) => {
     }
 });
 
-// 1B - Rezolvarea cerinței
+// 1B, 1C, 1D - Rezolvarea cerințelor
 app.get('/carti', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM carti ORDER BY data_adaugarii DESC');
+        // 1D - Preluare parametri query pentru filtrare dupa an
+        let an_minim = parseInt(req.query.an_minim) || 0;
+        let an_maxim = parseInt(req.query.an_maxim) || 9999;
+        
+        // Interogare cu filtrare dupa an_publicare
+        const result = await pool.query(
+            'SELECT * FROM carti WHERE an_publicare >= $1 AND an_publicare <= $2 ORDER BY data_adaugarii DESC',
+            [an_minim, an_maxim]
+        );
+        // 1C - Preluare scoruri ca array pentru fiecare carte
+        const carti = result.rows.map(carte => {
+            return {
+                ...carte,
+                scoruri: carte.scoruri ? carte.scoruri.split(',').map(s => parseInt(s.trim())) : []
+            };
+        });
         res.render('pagini/carti', { 
-            carti: result.rows,
+            carti: carti,
             title: 'Afișare Cărți'
         });
     } catch (err) {
