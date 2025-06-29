@@ -83,3 +83,61 @@ p:has(strong) {
   color: #007bff;
   font-weight: 600;
 }
+
+.carti-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 0;
+  counter-reset: carti-nr;
+}
+
+.carti-grid .c1 {
+  background-color: #e3f2fd;
+}
+
+.carti-grid .c2 {
+  background-color: #fff9c4;
+}
+
+.carti-grid .c3 {
+  background-color: #ffe0b2;
+}
+
+.carti-grid .book-section {
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid #bdbdbd;
+}
+
+.carti-grid .book-section::before {
+  counter-increment: carti-nr;
+  content: counter(carti-nr) ". ";
+  font-weight: bold;
+  color: #1976d2;
+  margin-right: 8px;
+  font-size: 1.1em;
+  /* 2B - numerotare vizibila */
+}
+
+@media (max-width: 1024px) {
+  .carti-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2C - doua coloane egale la ecran mediu */
+  }
+}
+table tr:hover td:first-child,
+table tr:hover td:last-child {
+  animation: bg-blue-scale 4s forwards; /* 2D - animatie hover pe scoruri */
+}
+
+@keyframes bg-blue-scale {
+  0% {
+    background: transparent;
+    transform: scale(1);
+  }
+  100% {
+    background: #1976d2;
+    color: #fff;
+    transform: scale(1.2); /* 2D - scale text cu 20% */
+  }
+}
