@@ -237,3 +237,23 @@ table tr:hover td:last-child {
     transform: scale(1.2); /* 2D - scale text cu 20% */
   }
 }
+.btn-reset {
+  padding: 8px 16px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-bottom: 18px;
+  margin-top: 4px;
+  margin-left: 0;
+  display: inline-block;
+}
+.btn-reset:hover {
+  background: #0056b3;
+}
+.btn-reset:active {
+  transform: translateY(1px);
+}

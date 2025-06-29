@@ -10,6 +10,11 @@
     <div class="container">
         <h1>Afișare Cărți</h1>
         
+        <!-- 4A - Paragraf pentru afișare număr sortări și filtrări -->
+        <p id="statsParagraph"></p>
+        <button id="resetStatsBtn" type="button" class="btn-reset">Resetează statistici</button>
+        <!-- 4A - Sfârșit paragraf -->
+        
         <!-- 3A, 3B, 3C - Controale pentru sortare și filtrare -->
         <div class="controls-section">
             <form id="sortFilterForm" method="GET" action="/carti">
@@ -171,6 +176,46 @@
                 }
                 afiseazaCarti(carti);
             }
+        });
+
+        // 4A, 4B - Statistici sortări și filtrări cu localStorage
+        function updateStatsParagraph() {
+            const sortari = localStorage.getItem('nrSortari') || 0;
+            const filtrari = localStorage.getItem('nrFiltrari') || 0;
+            document.getElementById('statsParagraph').textContent = `Număr sortări: ${sortari}, Număr filtrări: ${filtrari}`;
+        }
+        // Inițializare la încărcarea paginii
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatsParagraph();
+        });
+        // Incrementare la fiecare operație
+        document.getElementById('sortFilterForm').addEventListener('submit', function(e) {
+            if(randomCarti) {
+                // ... existing code ...
+                // 4A - Incrementare sortare/filtrare frontend
+                if(e.submitter && e.submitter.value === 'sort') {
+                    localStorage.setItem('nrSortari', parseInt(localStorage.getItem('nrSortari')||0)+1);
+                }
+                if(e.submitter && e.submitter.value === 'filter') {
+                    localStorage.setItem('nrFiltrari', parseInt(localStorage.getItem('nrFiltrari')||0)+1);
+                }
+                updateStatsParagraph();
+            } else {
+                // 4A - Incrementare sortare/filtrare backend (pagina se reîncarcă)
+                if(e.submitter && e.submitter.value === 'sort') {
+                    localStorage.setItem('nrSortari', parseInt(localStorage.getItem('nrSortari')||0)+1);
+                }
+                if(e.submitter && e.submitter.value === 'filter') {
+                    localStorage.setItem('nrFiltrari', parseInt(localStorage.getItem('nrFiltrari')||0)+1);
+                }
+                // updateStatsParagraph(); // Nu e nevoie, pagina se reîncarcă
+            }
+        });
+        // 4B - Resetare localStorage la click pe buton
+        document.getElementById('resetStatsBtn').addEventListener('click', function() {
+            localStorage.setItem('nrSortari', 0);
+            localStorage.setItem('nrFiltrari', 0);
+            updateStatsParagraph();
         });
     </script>
 </body>
