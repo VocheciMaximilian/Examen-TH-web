@@ -1,10 +1,7 @@
--- Create database
 CREATE DATABASE carti;
 
--- Connect to the database
 \c carti;
 
--- Create carti table
 CREATE TABLE carti (
     id SERIAL PRIMARY KEY,
     titlu VARCHAR(100) NOT NULL,
@@ -15,7 +12,6 @@ CREATE TABLE carti (
     data_adaugarii TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert sample books
 INSERT INTO carti (titlu, nume_autor, an_publicare, tema, scoruri)
 VALUES
 ('Mandrie si prejudecata', 'Jane Austen', 1813, 'Clasic', '9,8,10,9'),
@@ -29,8 +25,6 @@ VALUES
 ('Hamlet', 'William Shakespeare', 1603, 'Teatru', '10,10,10,9'),
 ('Crima din Orient Express', 'Agatha Christie', 1934, 'Mister', '8,9,10,9');
 
--- Verify the table structure
 \d carti;
 
--- Verify the data
 SELECT * FROM carti; 

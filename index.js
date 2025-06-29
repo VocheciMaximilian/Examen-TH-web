@@ -47,17 +47,8 @@ function compileScss() {
 compileScss();
 
 // Rute
-app.get('/', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM carti ORDER BY data_adaugarii DESC');
-        res.render('pagini/index', { 
-            carti: result.rows,
-            title: 'Gestionare Cărți'
-        });
-    } catch (err) {
-        console.error('Error fetching books:', err);
-        res.status(500).send('Error loading books');
-    }
+app.get('/', (req, res) => {
+  res.redirect('/carti');
 });
 
 // 1B, 1C, 1D 
