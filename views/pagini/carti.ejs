@@ -10,6 +10,32 @@
     <div class="container">
         <h1>Afișare Cărți</h1>
         
+        <!-- 3A, 3B, 3C - Controale pentru sortare și filtrare -->
+        <div class="controls-section">
+            <form id="sortFilterForm" method="GET" action="/carti">
+                <!-- 3A - Select pentru sortare după numele autorului -->
+                <div class="control-group">
+                    <label for="sortOrder">Sortare după numele autorului:</label>
+                    <select name="sortOrder" id="sortOrder">
+                        <option value="ascendent" <%= locals.sortOrder === 'ascendent' ? 'selected' : '' %>>Ascendent</option>
+                        <option value="descendent" <%= locals.sortOrder === 'descendent' ? 'selected' : '' %>>Descendent</option>
+                    </select>
+                    <button type="submit" name="action" value="sort">Sortează</button>
+                </div>
+                
+                <!-- 3C - Range pentru filtrare după scorul mediu -->
+                <div class="control-group">
+                    <label for="minScore">Scorul mediu minim: <span id="scoreValue">0</span></label>
+                    <input type="range" name="minScore" id="minScore" min="0" max="10" step="0.1" value="<%= locals.minScore || 0 %>">
+                    <button type="submit" name="action" value="filter">Filtrează</button>
+                </div>
+                
+                <!-- Păstrarea parametrilor existenți pentru filtrarea după an -->
+                <input type="hidden" name="an_minim" value="<%= locals.an_minim || '' %>">
+                <input type="hidden" name="an_maxim" value="<%= locals.an_maxim || '' %>">
+            </form>
+        </div>
+        
         <!-- 1B - Rezolvarea cerinței -->
         <!-- 2A - Grid 3 coloane cu pattern background -->
         <div class="carti-grid">
@@ -31,11 +57,25 @@
                         </tr>
                     </table>
                     <p>Scor minim: <%= Math.min(...carte.scoruri) %>, Scor maxim: <%= Math.max(...carte.scoruri) %></p>
+                    <p>Scor mediu: <%= (carte.scoruri.reduce((a, b) => a + b, 0) / carte.scoruri.length).toFixed(1) %></p>
                 <% } %>
                 <!-- 1D - Filtrarea se face in backend, vezi index.js -->
             </section>
         <% }); %>
         </div>
     </div>
+    
+    <script>
+        // 3C - Actualizare valoare range în timp real
+        document.getElementById('minScore').addEventListener('input', function() {
+            document.getElementById('scoreValue').textContent = this.value;
+        });
+        
+        // Inițializare valoare range
+        document.addEventListener('DOMContentLoaded', function() {
+            const rangeInput = document.getElementById('minScore');
+            document.getElementById('scoreValue').textContent = rangeInput.value;
+        });
+    </script>
 </body>
 </html>

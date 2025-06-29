@@ -38,6 +38,92 @@
   color: #495057;
 }
 
+.controls-section {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+.controls-section .control-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.controls-section .control-group:last-child {
+  margin-bottom: 0;
+}
+.controls-section .control-group label {
+  font-weight: 600;
+  color: #495057;
+  min-width: 200px;
+}
+.controls-section .control-group select, .controls-section .control-group input[type=range] {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+.controls-section .control-group select:focus, .controls-section .control-group input[type=range]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+.controls-section .control-group input[type=range] {
+  min-width: 200px;
+  height: 6px;
+  background: #dee2e6;
+  border-radius: 3px;
+  outline: none;
+  -webkit-appearance: none;
+}
+.controls-section .control-group input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.controls-section .control-group input[type=range]::-webkit-slider-thumb:hover {
+  background: #0056b3;
+}
+.controls-section .control-group input[type=range]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease;
+}
+.controls-section .control-group input[type=range]::-moz-range-thumb:hover {
+  background: #0056b3;
+}
+.controls-section .control-group button {
+  padding: 8px 16px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.controls-section .control-group button:hover {
+  background: #0056b3;
+}
+.controls-section .control-group button:active {
+  transform: translateY(1px);
+}
+
 body {
   background-color: #f5f5f5;
 }
@@ -57,6 +143,16 @@ body {
   }
   .book-section h2 {
     font-size: 1.3rem;
+  }
+  .controls-section .control-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .controls-section .control-group label {
+    min-width: auto;
+  }
+  .controls-section .control-group select, .controls-section .control-group input[type=range] {
+    width: 100%;
   }
 }
 table {
