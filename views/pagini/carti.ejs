@@ -76,6 +76,102 @@
             const rangeInput = document.getElementById('minScore');
             document.getElementById('scoreValue').textContent = rangeInput.value;
         });
+
+        // 3D - Randomizare scoruri la apasarea tastei r si filtrare/sortare pe scoruri random
+        let originalCarti = [];
+        let randomCarti = null;
+        
+        // Salvam datele initiale din DOM
+        function extrageCartiDinDOM() {
+            const sectiuni = document.querySelectorAll('.book-section');
+            let carti = [];
+            sectiuni.forEach(sec => {
+                const titlu = sec.querySelector('h2').textContent;
+                const autor = sec.querySelector('details p').textContent.split(',')[0].trim();
+                const an = parseInt(sec.querySelector('details p').textContent.split(',')[1]);
+                const scoruri = Array.from(sec.querySelectorAll('table td')).map(td => parseInt(td.textContent));
+                const tema = sec.querySelectorAll('details p')[1]?.textContent || '';
+                carti.push({
+                    titlu, nume_autor: autor, an_publicare: an, tema, scoruri
+                });
+            });
+            return carti;
+        }
+        
+        // La prima incarcare, salvez cartile originale
+        document.addEventListener('DOMContentLoaded', function() {
+            originalCarti = extrageCartiDinDOM();
+        });
+
+        // Genereaza scoruri random pentru fiecare carte
+        function genereazaScoruriRandom(carti) {
+            return carti.map(carte => {
+                let nr = carte.scoruri.length || 4;
+                let scoruri = Array.from({length: nr}, () => Math.floor(Math.random()*4)+7); // scoruri 7-10
+                return {...carte, scoruri};
+            });
+        }
+
+        // Redesenare carti in DOM
+        function afiseazaCarti(carti) {
+            const grid = document.querySelector('.carti-grid');
+            grid.innerHTML = '';
+            carti.forEach((carte, idx) => {
+                let scorMin = Math.min(...carte.scoruri);
+                let scorMax = Math.max(...carte.scoruri);
+                let scorMed = (carte.scoruri.reduce((a,b)=>a+b,0)/carte.scoruri.length).toFixed(1);
+                let scoruriHTML = '<tr>' + carte.scoruri.map(s => `<td>${s}</td>`).join('') + '</tr>';
+                grid.innerHTML += `
+                <section class="book-section grid-cell c${(idx%9)%3+1}">
+                    <h2>${carte.titlu}</h2>
+                    <details open>
+                        <summary>observatii</summary>
+                        <p>${carte.nume_autor}, ${carte.an_publicare}</p>
+                        <p>${carte.tema}</p>
+                    </details>
+                    <table border="1">${scoruriHTML}</table>
+                    <p>Scor minim: ${scorMin}, Scor maxim: ${scorMax}</p>
+                    <p>Scor mediu: ${scorMed}</p>
+                </section>`;
+            });
+        }
+
+        // 3D - La apasarea tastei r, scorurile devin random
+        document.addEventListener('keydown', function(e) {
+            if(e.key === 'r' || e.key === 'R') {
+                if(!randomCarti) {
+                    randomCarti = genereazaScoruriRandom(originalCarti);
+                } else {
+                    // regenereaza la fiecare apasare
+                    randomCarti = genereazaScoruriRandom(originalCarti);
+                }
+                afiseazaCarti(randomCarti);
+            }
+        });
+
+        // 3D - Suprascrie filtrarea/sortarea pe frontend daca scorurile sunt random
+        document.getElementById('sortFilterForm').addEventListener('submit', function(e) {
+            if(randomCarti) {
+                e.preventDefault();
+                let carti = [...randomCarti];
+                // sortare
+                let sortOrder = document.getElementById('sortOrder').value;
+                carti.sort((a, b) => {
+                    if(a.nume_autor < b.nume_autor) return sortOrder==='ascendent'?-1:1;
+                    if(a.nume_autor > b.nume_autor) return sortOrder==='ascendent'?1:-1;
+                    // daca numele sunt egale, sortam dupa scor minim
+                    let minA = Math.min(...a.scoruri);
+                    let minB = Math.min(...b.scoruri);
+                    return sortOrder==='ascendent' ? minA-minB : minB-minA;
+                });
+                // filtrare
+                let minScore = parseFloat(document.getElementById('minScore').value) || 0;
+                if(minScore>0) {
+                    carti = carti.filter(carte => (carte.scoruri.reduce((a,b)=>a+b,0)/carte.scoruri.length)>=minScore);
+                }
+                afiseazaCarti(carti);
+            }
+        });
     </script>
 </body>
 </html>
