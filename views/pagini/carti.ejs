@@ -10,15 +10,14 @@
     <div class="container">
         <h1>Afișare Cărți</h1>
         
-        <!-- 4A - Paragraf pentru afișare număr sortări și filtrări -->
+        <!-- 4A - Paragraf pentru afisare numar sortari + filtrari -->
         <p id="statsParagraph"></p>
         <button id="resetStatsBtn" type="button" class="btn-reset">Resetează statistici</button>
-        <!-- 4A - Sfârșit paragraf -->
         
-        <!-- 3A, 3B, 3C - Controale pentru sortare și filtrare -->
+        <!-- 3A, 3B, 3C - Controale pentru sortare si filtrare -->
         <div class="controls-section">
             <form id="sortFilterForm" method="GET" action="/carti">
-                <!-- 3A - Select pentru sortare după numele autorului -->
+                <!-- 3A - Select pentru sortare dupa numele autorului -->
                 <div class="control-group">
                     <label for="sortOrder">Sortare după numele autorului:</label>
                     <select name="sortOrder" id="sortOrder">
@@ -28,20 +27,18 @@
                     <button type="submit" name="action" value="sort">Sortează</button>
                 </div>
                 
-                <!-- 3C - Range pentru filtrare după scorul mediu -->
                 <div class="control-group">
                     <label for="minScore">Scorul mediu minim: <span id="scoreValue">0</span></label>
                     <input type="range" name="minScore" id="minScore" min="0" max="10" step="0.1" value="<%= locals.minScore || 0 %>">
                     <button type="submit" name="action" value="filter">Filtrează</button>
                 </div>
                 
-                <!-- Păstrarea parametrilor existenți pentru filtrarea după an -->
                 <input type="hidden" name="an_minim" value="<%= locals.an_minim || '' %>">
                 <input type="hidden" name="an_maxim" value="<%= locals.an_maxim || '' %>">
             </form>
         </div>
         
-        <!-- 1B - Rezolvarea cerinței -->
+        <!-- 1B -->
         <!-- 2A - Grid 3 coloane cu pattern background -->
         <div class="carti-grid">
         <% carti.forEach(function(carte, idx) { %>
@@ -64,7 +61,7 @@
                     <p>Scor minim: <%= Math.min(...carte.scoruri) %>, Scor maxim: <%= Math.max(...carte.scoruri) %></p>
                     <p>Scor mediu: <%= (carte.scoruri.reduce((a, b) => a + b, 0) / carte.scoruri.length).toFixed(1) %></p>
                 <% } %>
-                <!-- 1D - Filtrarea se face in backend, vezi index.js -->
+                <!-- 1D - Filtrarea se face in backend, index.js -->
             </section>
         <% }); %>
         </div>
@@ -76,7 +73,7 @@
             document.getElementById('scoreValue').textContent = this.value;
         });
         
-        // Inițializare valoare range
+        // Initializare valoare range
         document.addEventListener('DOMContentLoaded', function() {
             const rangeInput = document.getElementById('minScore');
             document.getElementById('scoreValue').textContent = rangeInput.value;
@@ -178,20 +175,19 @@
             }
         });
 
-        // 4A, 4B - Statistici sortări și filtrări cu localStorage
+        // 4A, 4B - Statistici sortari si filtrari cu localStorage
         function updateStatsParagraph() {
             const sortari = localStorage.getItem('nrSortari') || 0;
             const filtrari = localStorage.getItem('nrFiltrari') || 0;
             document.getElementById('statsParagraph').textContent = `Număr sortări: ${sortari}, Număr filtrări: ${filtrari}`;
         }
-        // Inițializare la încărcarea paginii
+        // Initializarea paginii
         document.addEventListener('DOMContentLoaded', function() {
             updateStatsParagraph();
         });
         // Incrementare la fiecare operație
         document.getElementById('sortFilterForm').addEventListener('submit', function(e) {
             if(randomCarti) {
-                // ... existing code ...
                 // 4A - Incrementare sortare/filtrare frontend
                 if(e.submitter && e.submitter.value === 'sort') {
                     localStorage.setItem('nrSortari', parseInt(localStorage.getItem('nrSortari')||0)+1);
@@ -201,14 +197,13 @@
                 }
                 updateStatsParagraph();
             } else {
-                // 4A - Incrementare sortare/filtrare backend (pagina se reîncarcă)
+                // 4A - Incrementare sortare/filtrare backend 
                 if(e.submitter && e.submitter.value === 'sort') {
                     localStorage.setItem('nrSortari', parseInt(localStorage.getItem('nrSortari')||0)+1);
                 }
                 if(e.submitter && e.submitter.value === 'filter') {
                     localStorage.setItem('nrFiltrari', parseInt(localStorage.getItem('nrFiltrari')||0)+1);
                 }
-                // updateStatsParagraph(); // Nu e nevoie, pagina se reîncarcă
             }
         });
         // 4B - Resetare localStorage la click pe buton

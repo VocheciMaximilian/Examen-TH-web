@@ -1,7 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const path = require('path');
-const sass = require('sass'); // Pentru compilare SCSS -> CSS
+const sass = require('sass'); 
 const fs = require('fs');
 
 const app = express();
@@ -16,7 +16,6 @@ const pool = new Pool({
     port:5432,
 });
 
-// Middleware
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'resurse')));
@@ -32,7 +31,7 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
-// Functie pentru compilare automata SCSS -> CSS
+// Functie pentru compilare automata SCSS CSS
 function compileScss() {
     const scssPath = path.join(__dirname, 'resurse', 'stiluri', 'style.scss');
     const cssPath = path.join(__dirname, 'resurse', 'stiluri', 'style.css');
@@ -45,10 +44,9 @@ function compileScss() {
     }
 }
 
-// Compileaza SCSS la pornirea serverului
 compileScss();
 
-// Routes
+// Rute
 app.get('/', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM carti ORDER BY data_adaugarii DESC');
@@ -66,7 +64,7 @@ app.get('/', async (req, res) => {
 // 3A, 3B, 3C 
 app.get('/carti', async (req, res) => {
     try {
-        // 1DcPreluare parametri query pentru filtrare dupa an
+        // 1Dc Preluare parametri query pentru filtrare dupa an
         let an_minim = parseInt(req.query.an_minim) || 0;
         let an_maxim = parseInt(req.query.an_maxim) || 9999;
         
@@ -77,7 +75,7 @@ app.get('/carti', async (req, res) => {
         // 3C - Preluare parametru pentru filtrare dupa scor mediu
         let minScore = parseFloat(req.query.minScore) || 0;
         
-        // Interogare cu filtrare dupa an_publicare si sortare după numele autorului
+        // Interogare cu filtrare dupa an_publicare si sortare dupa numele autorului
         const result = await pool.query(
             'SELECT * FROM carti WHERE an_publicare >= $1 AND an_publicare <= $2 ORDER BY nume_autor ' + orderBy,
             [an_minim, an_maxim]
@@ -96,17 +94,17 @@ app.get('/carti', async (req, res) => {
             };
         });
         
-        // 3B - Sortare secundară după scorul minim când numele autorului sunt egale
+        // 3B - Sortare secundara după scorul minim cand numele autorului sunt egale
         carti.sort((a, b) => {
             if (a.nume_autor === b.nume_autor) {
                 return sortOrder === 'descendent' 
                     ? b.scorMinim - a.scorMinim 
                     : a.scorMinim - b.scorMinim;
             }
-            return 0; // Păstrează ordinea din SQL pentru numele autorului
+            return 0; 
         });
         
-        // 3C - Filtrarea după scorul mediu
+        // 3C - Filtrarea dupa scorul mediu
         if (minScore > 0) {
             carti = carti.filter(carte => carte.scorMediu >= minScore);
         }

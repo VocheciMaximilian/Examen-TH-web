@@ -1,4 +1,3 @@
-// Book sections styling
 .book-section {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -46,7 +45,7 @@
     }
 }
 
-// 3A, 3B, 3C - Stilizare controale pentru sortare și filtrare
+// 3A, 3B, 3C - Stilizare controale pentru sortare si filtrare
 .controls-section {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -146,7 +145,6 @@
     }
 }
 
-// General styling improvements
 body {
     background-color: #f5f5f5;
 }
@@ -247,7 +245,6 @@ p:has(strong) {
   color: #1976d2;
   margin-right: 8px;
   font-size: 1.1em;
-  /* 2B - numerotare vizibila */
 }
 
 // --- 2C: Grid 2 coloane pe ecran mediu ---
@@ -295,4 +292,3 @@ table tr:hover td:last-child {
     transform: translateY(1px);
   }
 }
-// 4B - Sfârșit stil buton resetare

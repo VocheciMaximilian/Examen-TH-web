@@ -213,7 +213,6 @@ p:has(strong) {
   color: #1976d2;
   margin-right: 8px;
   font-size: 1.1em;
-  /* 2B - numerotare vizibila */
 }
 
 @media (max-width: 1024px) {
