@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stiluri/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Afișare Cărți</h1>
+        
+        <!-- 1B - Rezolvarea cerinței -->
+        <% carti.forEach(function(carte) { %>
+            <section>
+                <h2><%= carte.titlu %></h2>
+                <details open>
+                    <summary>observatii</summary>
+                    <p><%= carte.nume_autor %>, <%= carte.an_publicare %></p>
+                    <p><%= carte.tema %></p>
+                </details>
+            </section>
+        <% }); %>
+    </div>
+</body>
+</html>
